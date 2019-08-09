@@ -2,7 +2,6 @@ const db=require('./libs/database');//数据库配置模块
 const http=require('./libs/http');//http模块
 const {addRouter}=require('./libs/router');//路由模块下的添加路由
 
-
 addRouter('get','/list',async (res,get,post,file)=>{
     try {
         let data=await db.query('SELECT * FROM item_table');

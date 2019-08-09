@@ -15,6 +15,7 @@ http.createServer(((req, res) => {
     }
     //1.解析数据--GET.POST,file
     let {pathname,query}=url.parse(req.url,true);
+        //console.log(req.url,pathname,query);
 
     if(req.method=='POST'){
         //1.有2种格式  一种普通头，一种fromdata
@@ -55,7 +56,12 @@ http.createServer(((req, res) => {
 
         }
 
-    }else{
+    }else if(pathname=='/'){
+        //无参数
+        res.writeJson({error:1,msg: 'api请求错误'});
+        res.end()
+    }
+    else{
         //2.找路由
         handle(req.method,pathname,query,{},{})
     }
@@ -88,22 +94,20 @@ async function handle(method,url,get,post,file) {//数据准备好就执行这�
         try{
             await fn(res,get,post,file);//执行api的方法
         }catch (e) {
-            console.log(e)
+            console.log(e);
             res.writeHead(500);
             res.write('Internal Server Error');
             res.end();
         }
-        
+
     }
-
-
 
 }
 
 
 })).listen(HTTP_PORT);
 
-console.log(`服务器已经运行在${HTTP_PORT}端口`)
+console.log(`服务器已经运行，运行在${HTTP_PORT}端口`)
 
 
 
